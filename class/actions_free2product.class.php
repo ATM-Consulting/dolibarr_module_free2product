@@ -62,7 +62,7 @@ class ActionsFree2Product
 	function formObjectOptions($parameters, &$object, &$action, $hookmanager)
 	{
 		$error = 0; // Error counter
-		$myvalue = 'test'; // A result value
+		$myvalue = ''; // A result value
 
 		if (in_array('propalcard', explode(':', $parameters['context'])))
 		{
@@ -70,7 +70,7 @@ class ActionsFree2Product
 			global $langs;
 			$langs->load('free2product@free2product');
 			
-			if(!empty($object->lines) && empty($action)) {
+			if(!empty($object->lines)) {
 				
 				?><script type="text/javascript">
 					function free2product(lineid) {
@@ -79,27 +79,35 @@ class ActionsFree2Product
 						var label = $a.attr('label');
 						var qty = $a.attr('qty');
 						var price = $a.attr('price');
+						var product_type = $a.attr('product_type');
 						
-						$.ajax({
-							url:"<?php echo dol_buildpath('/free2product/script/interface.php',1) ?>"
-							,data:{
-								put:'change-line'
-								,lineid:lineid
-								,qty:qty
-								,label:label
-								,price:price	
-								,element:"<?php echo $object->element; ?>"
-							}
-						}).done(function(fk_product) {
-							if(fk_product<=0)alert('ErrorDuringConversion');
-							else document.location.href="<?php
+						var ref = window.prompt("<?php echo $langs->transnoentities('ConvertToNewProductRef') ?>","FREELINE-"+lineid);
+						if(ref) {
+							$.ajax({
+								url:"<?php echo dol_buildpath('/free2product/script/interface.php',1) ?>"
+								,data:{
+									put:'change-line'
+									,lineid:lineid
+									,qty:qty
+									,label:label
+									,price:price
+									,ref:ref	
+									,product_type:product_type
+									,element:"<?php echo $object->element; ?>"
+								}
+							}).done(function(fk_product) {
+								if(fk_product<=0)alert('ErrorDuringConversion');
+								else document.location.href="<?php
+									
+									if($object->element == 'propal') echo dol_buildpath('/comm/propal.php?id='.$object->id,1);
+									else if($object->element == 'commande') echo dol_buildpath('/commande/card.php?id='.$object->id,1);
+									
+								?>";
 								
-								if($object->element == 'propal') echo dol_buildpath('/comm/propal.php?id='.$object->id,1);
-								else if($object->element == 'commande') echo dol_buildpath('/commande/card.php?id='.$object->id,1);
-								
-							?>";
-							
-						});
+							});
+						}
+						
+						
 						
 								
 					}
@@ -110,7 +118,7 @@ class ActionsFree2Product
 					
 					if($line->product_type <= 1 && $line->fk_product == 0) {
 						
-						$link='<a href="#" style="float:left;" onclick="free2product('.$line->id.')" lineid="'.$line->id.'" label="'.htmlentities($line->desc).'" qty="'.$line->qty.'" price="'.$line->subprice.'">'.img_left($langs->trans('MakeAsProduct')).'</a>'
+						$link='<a href="javascript:;" style="float:left;" onclick="free2product('.$line->id.')" lineid="'.$line->id.'" label="'.htmlentities($line->desc).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'">'.img_left($langs->trans('MakeAsProduct')).'</a>'
 						
 						?>
 						$('tr#row-<?php echo $line->id; ?> td:first').prepend('<?php echo $link; ?>');

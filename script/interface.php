@@ -13,10 +13,15 @@
 			$label = GETPOST('label');
 			$price = GETPOST('price');
 			$element = GETPOST('element');
+			$ref = GETPOST('ref');
+			$product_type = GETPOST('product_type');
 			
-			if (empty($conf->global->PRODUCT_CODEPRODUCT_ADDON) || $conf->global->PRODUCT_CODEPRODUCT_ADDON == 'mod_codeproduct_leopard') $ref = 'FROMLINE-'.$lineid;
+			if (empty($ref) && (empty($conf->global->PRODUCT_CODEPRODUCT_ADDON) || $conf->global->PRODUCT_CODEPRODUCT_ADDON == 'mod_codeproduct_leopard')) {
+				$ref = 'FROMLINE-'.$lineid;
+			} 
 		
 			$product = new Product($db);
+			$product->type = $product_type;
 			$product->ref = $ref;
 			$product->label = $label;
 			$product->price = $price;
@@ -29,7 +34,6 @@
 				else if($element == 'commande')$table='commandedet';
 				
 				$db->query("UPDATE ".MAIN_DB_PREFIX.$table." SET fk_product=".$id." WHERE rowid=".$lineid);
-				var_dump($db);
 			}
 			
 			echo $id;

@@ -64,7 +64,10 @@ class ActionsFree2Product
 		$error = 0; // Error counter
 		$myvalue = ''; // A result value
 
-		if (in_array('propalcard', explode(':', $parameters['context'])))
+		if (
+			in_array('propalcard', explode(':', $parameters['context'])) 
+			|| in_array('ordercard', explode(':', $parameters['context']))
+		)
 		{
 		  	
 			global $langs;

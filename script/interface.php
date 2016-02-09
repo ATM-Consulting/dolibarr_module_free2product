@@ -34,6 +34,11 @@
 				else if($element == 'commande')$table='commandedet';
 				
 				$db->query("UPDATE ".MAIN_DB_PREFIX.$table." SET fk_product=".$id." WHERE rowid=".$lineid);
+
+				if($conf->nomenclature->enabled) { //TODO hook
+					$db->query("UPDATE ".MAIN_DB_PREFIX."nomenclature SET fk_object=".$id.", object_type='product' WHERE fk_object=".$lineid." AND object_type='".$element."' ");
+				}
+
 			}
 			
 			echo $id;

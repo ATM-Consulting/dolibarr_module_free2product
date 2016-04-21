@@ -90,7 +90,7 @@ class ActionsFree2Product
 									if($line->product_type <= 1 && $line->fk_product == 0) { 
 									
 										echo '<tr>
-											<td>'.$formCore->texte('', 'TFreeProduct['.$line->id.'][ref]', 'FREELINE-'.$line->id, 15,255,' lineid="'.$line->id.'" label="'.htmlentities($line->desc).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" ').'</td>
+											<td>'.$formCore->texte('', 'TFreeProduct['.$line->id.'][ref]', 'FREELINE-'.$line->id, 15,255,' lineid="'.$line->id.'" label="'.htmlentities(addslashes($line->desc)).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" ').'</td>
 											<td>'.$line->desc.'</td>
 											<td align="right">'.price($line->subprice).'</td>
 											<td align="right">'.price($line->qty).'</td>
@@ -208,10 +208,11 @@ class ActionsFree2Product
 				
 				foreach($object->lines as &$line) {
 					
+
 					if($line->product_type <= 1 && $line->fk_product == 0) { // Ceci est une ligne libre
 						$addButtonToConvertAll=true;
 					
-						$link='<a href="javascript:;" style="float:left;" onclick="free2product('.$line->id.')" lineid="'.$line->id.'" label="'.htmlentities($line->desc).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'">'.img_left($langs->trans('MakeAsProduct')).'</a>'
+						$link='<a href="javascript:;" style="float:left;" onclick="free2product('.$line->id.')" lineid="'.$line->id.'" label="'.htmlentities(addslashes($line->desc)).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'">'.img_left($langs->trans('MakeAsProduct')).'</a>'
 						
 						?>
 						$('tr#row-<?php echo $line->id; ?> td:first').prepend('<?php echo $link; ?>');

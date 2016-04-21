@@ -8,3 +8,4 @@ Free2ProductAbout = A propos du module Free2Product
 MakeAsProduct=Convertir en produit
 ConvertToNewProductRef=Convertir cette ligne avec la référence
 NoParam=Pas de paramètre pour ce module. Vous trouverez une petite flèche à gauche des lignes libres pour la conversion.
+convertAllFreeLine=Convertion complète

@@ -59,6 +59,59 @@ class ActionsFree2Product
 	 * @param   HookManager     $hookmanager    Hook manager propagated to allow calling another hook
 	 * @return  int                             < 0 on error, 0 on success, 1 to replace standard code
 	 */
+	
+	function addMoreActionsButtons($parameters, &$object, &$action, $hookmanager){
+		
+		if (
+			in_array('propalcard', explode(':', $parameters['context'])) 
+			|| in_array('ordercard', explode(':', $parameters['context']))
+		)
+		{
+			global $langs;
+			$langs->load('free2product@free2product');
+			
+			global $addButtonToConvertAll;
+			
+			if($addButtonToConvertAll) {
+				
+				?>
+				<div class="inline-block divButAction"><a class="butAction" href="javascript:convertAllFreeLine();""><?php echo $langs->trans('convertAllFreeLine') ?></a></div>
+				<?php
+				?>
+					<div id="convertAllFreeLine_popup" style="display:none">
+						<?php 
+						$formCore=new TFormCore;
+						?>
+						<table class="border" width="100%">
+							<?php
+								
+								foreach($object->lines as &$line) {
+					
+									if($line->product_type <= 1 && $line->fk_product == 0) { 
+									
+										echo '<tr>
+											<td>'.$formCore->texte('', 'TFreeProduct['.$line->id.'][ref]', 'FREELINE-'.$line->id, 15,255,' lineid="'.$line->id.'" label="'.htmlentities($line->desc).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" ').'</td>
+											<td>'.$line->desc.'</td>
+											<td align="right">'.price($line->subprice).'</td>
+											<td align="right">'.price($line->qty).'</td>
+										</tr>';
+										
+									
+									}							
+								
+								}
+							?>
+						</table>
+						
+					</div>
+					<?php
+			}
+			
+		
+		}
+		
+	} 
+	
 	function formObjectOptions($parameters, &$object, &$action, $hookmanager)
 	{
 		$error = 0; // Error counter
@@ -76,15 +129,40 @@ class ActionsFree2Product
 			if(!empty($object->lines)) {
 				
 				?><script type="text/javascript">
-					function free2product(lineid) {
+					function convertAllFreeLine() {
+						$('#convertAllFreeLine_popup').dialog({
+							title:"<?php echo $langs->transnoentities('convertAllFreeLine') ?>"
+							,modal:true
+							,buttons: {
+					        	"Convertir ces lignes": function() {
+					        		$('#convertAllFreeLine_popup input[lineid]').each(function(i,item) {
+					        			
+					        			$item = $(item); 
+					        			
+					        			var ref = $item.val();
+										var lineid = $item.attr('lineid');
+										var label = $item.attr('label');
+										var qty = $item.attr('qty');
+										var price = $item.attr('price');
+										var product_type = $item.attr('product_type');
+										
+					        			convert_free2product(lineid,ref,label,qty,price,product_type);
+					        		});
+					        		
+					        		
+					        		
+					        		document.location.href="<?php
+												if($object->element == 'propal') echo dol_buildpath('/comm/propal.php?id='.$object->id,1);
+												else if($object->element == 'commande') echo dol_buildpath('/commande/card.php?id='.$object->id,1);
+									?>";
+					          		$( this ).dialog( "close" );
+					        	}
+							}
+						});
+					}
 						
-						$a = $('a[lineid='+lineid+']'); 
-						var label = $a.attr('label');
-						var qty = $a.attr('qty');
-						var price = $a.attr('price');
-						var product_type = $a.attr('product_type');
+					function convert_free2product(lineid,ref,label,qty,price,product_type) {
 						
-						var ref = window.prompt("<?php echo $langs->transnoentities('ConvertToNewProductRef') ?>","FREELINE-"+lineid);
 						if(ref) {
 							$.ajax({
 								url:"<?php echo dol_buildpath('/free2product/script/interface.php',1) ?>"
@@ -98,17 +176,25 @@ class ActionsFree2Product
 									,product_type:product_type
 									,element:"<?php echo $object->element; ?>"
 								}
+								,async:false
 							}).done(function(fk_product) {
-								if(fk_product<=0)alert('ErrorDuringConversion');
-								else document.location.href="<?php
-									
-									if($object->element == 'propal') echo dol_buildpath('/comm/propal.php?id='.$object->id,1);
-									else if($object->element == 'commande') echo dol_buildpath('/commande/card.php?id='.$object->id,1);
-									
-								?>";
+								if(fk_product<=0)alert('ErrorDuringConversion '+ref);
 								
 							});
 						}
+						
+					}
+						
+					function free2product(lineid) {
+						
+						$a = $('a[lineid='+lineid+']'); 
+						var label = $a.attr('label');
+						var qty = $a.attr('qty');
+						var price = $a.attr('price');
+						var product_type = $a.attr('product_type');
+						
+						var ref = window.prompt("<?php echo $langs->transnoentities('ConvertToNewProductRef') ?>","FREELINE-"+lineid);
+						convert_free2product(lineid,ref,label,qty,price,product_type);
 						
 						
 						
@@ -117,10 +203,14 @@ class ActionsFree2Product
 				
 					$(document).ready(function () {<?php
 				
+				global $addButtonToConvertAll;
+				$addButtonToConvertAll = false;
+				
 				foreach($object->lines as &$line) {
 					
-					if($line->product_type <= 1 && $line->fk_product == 0) {
-						
+					if($line->product_type <= 1 && $line->fk_product == 0) { // Ceci est une ligne libre
+						$addButtonToConvertAll=true;
+					
 						$link='<a href="javascript:;" style="float:left;" onclick="free2product('.$line->id.')" lineid="'.$line->id.'" label="'.htmlentities($line->desc).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'">'.img_left($langs->trans('MakeAsProduct')).'</a>'
 						
 						?>
@@ -131,8 +221,15 @@ class ActionsFree2Product
 					
 				}
 				
-				?>});</script><?php
+				?>
+				});
+				</script>
+				<?php
+				
+				
 			}
+			
+			
 			
 		}
 

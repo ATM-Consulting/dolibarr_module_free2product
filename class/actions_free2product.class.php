@@ -133,6 +133,7 @@ class ActionsFree2Product
 						$('#convertAllFreeLine_popup').dialog({
 							title:"<?php echo $langs->transnoentities('convertAllFreeLine') ?>"
 							,modal:true
+							,width:'80%'
 							,buttons: {
 					        	"Convertir ces lignes": function() {
 					        		$('#convertAllFreeLine_popup input[lineid]').each(function(i,item) {

@@ -15,6 +15,7 @@
 			$element = GETPOST('element');
 			$ref = GETPOST('ref');
 			$product_type = GETPOST('product_type');
+			$tva = GETPOST('tva');
 			
 			if (empty($ref) && (empty($conf->global->PRODUCT_CODEPRODUCT_ADDON) || $conf->global->PRODUCT_CODEPRODUCT_ADDON == 'mod_codeproduct_leopard')) {
 				$ref = 'FROMLINE-'.$lineid;
@@ -26,6 +27,7 @@
 			$product->label = $label;
 			$product->libelle = $product->label; // @deprecated
 			$product->price = $price;
+			$product->tva_tx = $tva;
 			$product->status = 1;
 			$product->status_buy = 1;
 			$id = $product->create($user);

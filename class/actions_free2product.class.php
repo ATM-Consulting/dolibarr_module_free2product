@@ -87,10 +87,11 @@ class ActionsFree2Product
 								
 								foreach($object->lines as &$line) {
 					
-									if($line->product_type <= 1 && $line->fk_product == 0) { 
+									if($line->product_type <= 1 && $line->fk_product == 0) {
+										$lineid = !empty($line->id) ? $line->id : $line->rowid; // compatibilité 3.6
 										$desc = !empty($line->desc) ? $line->desc : $line->description; // compatibilité 3.6
 										echo '<tr>
-											<td>'.$formCore->texte('', 'TFreeProduct['.$line->id.'][ref]', 'FREELINE-'.$line->id, 15,255,' lineid="'.$line->id.'" label="'.htmlentities(addslashes($line->description)).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" tva="'.$line->tva_tx.'" ').'</td>
+											<td>'.$formCore->texte('', 'TFreeProduct['.$line->id.'][ref]', 'FREELINE-'.$lineid, 15,255,' lineid="'.$lineid.'" label="'.htmlentities(addslashes($desc)).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" tva="'.$line->tva_tx.'" ').'</td>
 											<td>'.$line->desc.'</td>
 											<td align="right">'.price($line->subprice).'</td>
 											<td align="right">'.price($line->qty).'</td>
@@ -225,9 +226,9 @@ class ActionsFree2Product
 
 					if($line->product_type <= 1 && $line->fk_product == 0) { // Ceci est une ligne libre
 						$addButtonToConvertAll=true;
-						$id = !empty($line->id) ? $line->id : $line->rowid; // compatibilité 3.6
+						$lineid = !empty($line->id) ? $line->id : $line->rowid; // compatibilité 3.6
 						$desc = !empty($line->desc) ? $line->desc : $line->description;
-						$link='<a href="javascript:;" style="float:left;" onclick="free2product('.$id.')" lineid="'.$id.'" label="'.htmlentities(addslashes(strtr($desc,array("\n"=>'\n',"\r"=>'')))).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" tva="'.$line->tva_tx.'" >'.img_left($langs->trans('MakeAsProduct')).'</a>'
+						$link='<a href="javascript:;" style="float:left;" onclick="free2product('.$lineid.')" lineid="'.$lineid.'" label="'.htmlentities(addslashes(strtr($desc,array("\n"=>'\n',"\r"=>'')))).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" tva="'.$line->tva_tx.'" >'.img_left($langs->trans('MakeAsProduct')).'</a>'
 						
 						?>
 						$('tr#row-<?php echo !empty($line->id) ? $line->id : $line->rowid; ?> td:first').prepend('<?php echo $link; ?>');

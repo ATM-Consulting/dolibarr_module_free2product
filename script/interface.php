@@ -24,6 +24,7 @@
 			$product->type = $product_type;
 			$product->ref = $ref;
 			$product->label = $label;
+			$product->libelle = $product->label; // @deprecated
 			$product->price = $price;
 			$product->status = 1;
 			$product->status_buy = 1;

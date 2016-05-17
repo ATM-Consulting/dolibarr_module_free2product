@@ -88,9 +88,9 @@ class ActionsFree2Product
 								foreach($object->lines as &$line) {
 					
 									if($line->product_type <= 1 && $line->fk_product == 0) { 
-									
+										$desc = !empty($line->desc) ? $line->desc : $line->description; // compatibilité 3.6
 										echo '<tr>
-											<td>'.$formCore->texte('', 'TFreeProduct['.$line->id.'][ref]', 'FREELINE-'.$line->id, 15,255,' lineid="'.$line->id.'" label="'.htmlentities(addslashes($line->desc)).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" ').'</td>
+											<td>'.$formCore->texte('', 'TFreeProduct['.$line->id.'][ref]', 'FREELINE-'.$line->id, 15,255,' lineid="'.$line->id.'" label="'.htmlentities(addslashes($line->description)).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" ').'</td>
 											<td>'.$line->desc.'</td>
 											<td align="right">'.price($line->subprice).'</td>
 											<td align="right">'.price($line->qty).'</td>

@@ -87,10 +87,11 @@ class ActionsFree2Product
 								
 								foreach($object->lines as &$line) {
 					
-									if($line->product_type <= 1 && $line->fk_product == 0) { 
-									
+									if($line->product_type <= 1 && $line->fk_product == 0) {
+										$lineid = !empty($line->id) ? $line->id : $line->rowid; // compatibilité 3.6
+										$desc = !empty($line->desc) ? $line->desc : $line->description; // compatibilité 3.6
 										echo '<tr>
-											<td>'.$formCore->texte('', 'TFreeProduct['.$line->id.'][ref]', 'FREELINE-'.$line->id, 15,255,' lineid="'.$line->id.'" label="'.htmlentities(addslashes($line->desc)).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" ').'</td>
+											<td>'.$formCore->texte('', 'TFreeProduct['.$line->id.'][ref]', 'FREELINE-'.$lineid, 15,255,' lineid="'.$lineid.'" label="'.htmlentities(addslashes($desc)).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" tva="'.$line->tva_tx.'" ').'</td>
 											<td>'.$line->desc.'</td>
 											<td align="right">'.price($line->subprice).'</td>
 											<td align="right">'.price($line->qty).'</td>
@@ -146,8 +147,9 @@ class ActionsFree2Product
 										var qty = $item.attr('qty');
 										var price = $item.attr('price');
 										var product_type = $item.attr('product_type');
+										var tva = $item.attr('tva');
 										
-					        			convert_free2product(lineid,ref,label,qty,price,product_type);
+					        			convert_free2product(lineid,ref,label,qty,price,product_type,tva);
 					        		});
 					        		
 					        		
@@ -161,8 +163,16 @@ class ActionsFree2Product
 							}
 						});
 					}
+					
+					function redirect()
+					{
+						document.location.href="<?php
+									if($object->element == 'propal') echo dol_buildpath('/comm/propal.php?id='.$object->id,1);
+									else if($object->element == 'commande') echo dol_buildpath('/commande/card.php?id='.$object->id,1);
+						?>";
+					}
 						
-					function convert_free2product(lineid,ref,label,qty,price,product_type) {
+					function convert_free2product(lineid,ref,label,qty,price,product_type,tva) {
 						
 						if(ref) {
 							$.ajax({
@@ -175,6 +185,7 @@ class ActionsFree2Product
 									,price:price
 									,ref:ref	
 									,product_type:product_type
+									,tva:tva
 									,element:"<?php echo $object->element; ?>"
 								}
 								,async:false
@@ -182,6 +193,8 @@ class ActionsFree2Product
 								if(fk_product<=0)alert('ErrorDuringConversion '+ref);
 								
 							});
+							
+							redirect();
 						}
 						
 					}
@@ -193,9 +206,10 @@ class ActionsFree2Product
 						var qty = $a.attr('qty');
 						var price = $a.attr('price');
 						var product_type = $a.attr('product_type');
+						var tva = $a.attr('tva');
 						
 						var ref = window.prompt("<?php echo $langs->transnoentities('ConvertToNewProductRef') ?>","FREELINE-"+lineid);
-						convert_free2product(lineid,ref,label,qty,price,product_type);
+						convert_free2product(lineid,ref,label,qty,price,product_type,tva);
 						
 						
 						
@@ -212,11 +226,12 @@ class ActionsFree2Product
 
 					if($line->product_type <= 1 && $line->fk_product == 0) { // Ceci est une ligne libre
 						$addButtonToConvertAll=true;
-					
-						$link='<a href="javascript:;" style="float:left;" onclick="free2product('.$line->id.')" lineid="'.$line->id.'" label="'.htmlentities(addslashes(strtr($line->desc,array("\n"=>'\n',"\r"=>'')))).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'">'.img_left($langs->trans('MakeAsProduct')).'</a>'
+						$lineid = !empty($line->id) ? $line->id : $line->rowid; // compatibilité 3.6
+						$desc = !empty($line->desc) ? $line->desc : $line->description;
+						$link='<a href="javascript:;" style="float:left;" onclick="free2product('.$lineid.')" lineid="'.$lineid.'" label="'.htmlentities(addslashes(strtr($desc,array("\n"=>'\n',"\r"=>'')))).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" tva="'.$line->tva_tx.'" >'.img_left($langs->trans('MakeAsProduct')).'</a>'
 						
 						?>
-						$('tr#row-<?php echo $line->id; ?> td:first').prepend('<?php echo $link; ?>');
+						$('tr#row-<?php echo $lineid; ?> td:first').prepend('<?php echo $link; ?>');
 						<?php
 						
 					}

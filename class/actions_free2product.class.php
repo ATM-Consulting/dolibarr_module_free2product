@@ -231,7 +231,7 @@ class ActionsFree2Product
 						$link='<a href="javascript:;" style="float:left;" onclick="free2product('.$lineid.')" lineid="'.$lineid.'" label="'.htmlentities(addslashes(strtr($desc,array("\n"=>'\n',"\r"=>'')))).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" tva="'.$line->tva_tx.'" >'.img_left($langs->trans('MakeAsProduct')).'</a>'
 						
 						?>
-						$('tr#row-<?php echo !empty($line->id) ? $line->id : $line->rowid; ?> td:first').prepend('<?php echo $link; ?>');
+						$('tr#row-<?php echo $lineid; ?> td:first').prepend('<?php echo $link; ?>');
 						<?php
 						
 					}

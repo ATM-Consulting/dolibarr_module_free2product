@@ -17,8 +17,10 @@
 			$product_type = GETPOST('product_type');
 			$tva = GETPOST('tva');
 			
+			$base_new_ref = !empty($conf->global->FREE2PRODUCT_BASE_NEWREF) ? $conf->global->FREE2PRODUCT_BASE_NEWREF : 'FREELINE-';
+			
 			if (empty($ref) && (empty($conf->global->PRODUCT_CODEPRODUCT_ADDON) || $conf->global->PRODUCT_CODEPRODUCT_ADDON == 'mod_codeproduct_leopard')) {
-				$ref = 'FROMLINE-'.$lineid;
+				$ref = $base_new_ref.$lineid;
 			} 
 		
 			$product = new Product($db);

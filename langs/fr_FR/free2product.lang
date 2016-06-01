@@ -9,3 +9,5 @@ MakeAsProduct=Convertir en produit
 ConvertToNewProductRef=Convertir cette ligne avec la référence
 NoParam=Pas de paramètre pour ce module. Vous trouverez une petite flèche à gauche des lignes libres pour la conversion.
 convertAllFreeLine=Conversion complète
+
+set_FREE2PRODUCT_BASE_NEWREF=Base de référence pour la conversion en produit/service

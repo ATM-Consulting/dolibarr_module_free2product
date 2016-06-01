@@ -67,10 +67,12 @@ class ActionsFree2Product
 			|| in_array('ordercard', explode(':', $parameters['context']))
 		)
 		{
-			global $langs;
+			global $langs,$conf;
 			$langs->load('free2product@free2product');
 			
 			global $addButtonToConvertAll;
+			
+			$base_new_ref = !empty($conf->global->FREE2PRODUCT_BASE_NEWREF) ? $conf->global->FREE2PRODUCT_BASE_NEWREF : 'FREELINE-';
 			
 			if($addButtonToConvertAll) {
 				
@@ -91,7 +93,7 @@ class ActionsFree2Product
 										$lineid = !empty($line->id) ? $line->id : $line->rowid; // compatibilité 3.6
 										$desc = !empty($line->desc) ? $line->desc : $line->description; // compatibilité 3.6
 										echo '<tr>
-											<td>'.$formCore->texte('', 'TFreeProduct['.$line->id.'][ref]', 'FREELINE-'.$lineid, 15,255,' lineid="'.$lineid.'" label="'.htmlentities(addslashes($desc)).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" tva="'.$line->tva_tx.'" ').'</td>
+											<td>'.$formCore->texte('', 'TFreeProduct['.$line->id.'][ref]', $base_new_ref.$lineid, 15,255,' lineid="'.$lineid.'" label="'.htmlentities(addslashes($desc)).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" tva="'.$line->tva_tx.'" ').'</td>
 											<td>'.$line->desc.'</td>
 											<td align="right">'.price($line->subprice).'</td>
 											<td align="right">'.price($line->qty).'</td>
@@ -124,8 +126,9 @@ class ActionsFree2Product
 		)
 		{
 		  	
-			global $langs;
+			global $langs,$conf;
 			$langs->load('free2product@free2product');
+			$base_new_ref = !empty($conf->global->FREE2PRODUCT_BASE_NEWREF) ? $conf->global->FREE2PRODUCT_BASE_NEWREF : 'FREELINE-';
 			
 			if(!empty($object->lines)) {
 				
@@ -208,7 +211,7 @@ class ActionsFree2Product
 						var product_type = $a.attr('product_type');
 						var tva = $a.attr('tva');
 						
-						var ref = window.prompt("<?php echo $langs->transnoentities('ConvertToNewProductRef') ?>","FREELINE-"+lineid);
+						var ref = window.prompt("<?php echo $langs->transnoentities('ConvertToNewProductRef') ?>","<?php echo $base_new_ref ?>"+lineid);
 						convert_free2product(lineid,ref,label,qty,price,product_type,tva);
 						
 						

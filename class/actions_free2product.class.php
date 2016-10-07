@@ -76,37 +76,45 @@ class ActionsFree2Product
 			
 			if($addButtonToConvertAll) {
 				
+				// On ajoute l'inclusion d'abricot
+				define('INC_FROM_DOLIBARR',true);
+				dol_include_once('/free2product/config.php');
+				
 				?>
-				<div class="inline-block divButAction"><a class="butAction" href="javascript:convertAllFreeLine();""><?php echo $langs->trans('convertAllFreeLine') ?></a></div>
-				<?php
-				?>
-					<div id="convertAllFreeLine_popup" style="display:none">
-						<?php 
-						$formCore=new TFormCore;
-						?>
-						<table class="border" width="100%">
-							<?php
-								
-								foreach($object->lines as &$line) {
+				<div class="inline-block divButAction">
+					<a class="butAction" href="javascript:convertAllFreeLine();">
+						<?php echo $langs->trans('convertAllFreeLine') ?>
+					</a>
 					
-									if($line->product_type <= 1 && $line->fk_product == 0) {
-										$lineid = !empty($line->id) ? $line->id : $line->rowid; // compatibilité 3.6
-										$desc = !empty($line->desc) ? $line->desc : $line->description; // compatibilité 3.6
-										echo '<tr>
-											<td>'.$formCore->texte('', 'TFreeProduct['.$line->id.'][ref]', $base_new_ref.$lineid, 15,255,' lineid="'.$lineid.'" label="'.htmlentities(addslashes($desc)).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" tva="'.$line->tva_tx.'" ').'</td>
-											<td>'.$line->desc.'</td>
-											<td align="right">'.price($line->subprice).'</td>
-											<td align="right">'.price($line->qty).'</td>
-										</tr>';
-										
+				</div>
+
+				<div id="convertAllFreeLine_popup" style="display:none">
+					<?php 
+					$formCore = new TFormCore;
+					?>
+					<table class="border" width="100%">
+						<?php
+							
+							foreach($object->lines as &$line) {
+				
+								if($line->product_type <= 1 && $line->fk_product == 0) {
+									$lineid = !empty($line->id) ? $line->id : $line->rowid; // compatibilité 3.6
+									$desc = !empty($line->desc) ? $line->desc : $line->description; // compatibilité 3.6
+									echo '<tr>
+										<td>'.$formCore->texte('', 'TFreeProduct['.$line->id.'][ref]', $base_new_ref.$lineid, 15,255,' lineid="'.$lineid.'" label="'.htmlentities(addslashes($desc)).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" tva="'.$line->tva_tx.'" ').'</td>
+										<td>'.$line->desc.'</td>
+										<td align="right">'.price($line->subprice).'</td>
+										<td align="right">'.price($line->qty).'</td>
+									</tr>';
 									
-									}							
 								
-								}
-							?>
-						</table>
-						
-					</div>
+								}							
+							
+							}
+						?>
+					</table>
+					
+				</div>
 					<?php
 			}
 			
@@ -231,7 +239,12 @@ class ActionsFree2Product
 						$addButtonToConvertAll=true;
 						$lineid = !empty($line->id) ? $line->id : $line->rowid; // compatibilité 3.6
 						$desc = !empty($line->desc) ? $line->desc : $line->description;
-						$link='<a href="javascript:;" style="float:left;" onclick="free2product('.$lineid.')" lineid="'.$lineid.'" label="'.htmlentities(addslashes(strtr($desc,array("\n"=>'\n',"\r"=>'')))).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" tva="'.$line->tva_tx.'" >'.img_left($langs->trans('MakeAsProduct')).'</a>'
+						$link='<a href="javascript:;" style="float:left;"';
+						$link.=' onclick="free2product('.$lineid.')" lineid="'.$lineid.'"';
+						$link.=' label="'.htmlentities(addslashes(strtr($desc,array("\n"=>'\n',"\r"=>'')))).'"';
+						$link.=' qty="'.$line->qty.'" price="'.$line->subprice.'"';
+						$link.=' product_type="'.$line->product_type.'" tva="'.$line->tva_tx.'" >';
+						$link.=img_left($langs->trans('MakeAsProduct')).'</a>';
 						
 						?>
 						$('tr#row-<?php echo $lineid; ?> td:first').prepend('<?php echo $link; ?>');

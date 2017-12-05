@@ -178,8 +178,9 @@ class ActionsFree2Product
 					function redirect()
 					{
 						document.location.href="<?php
-									if($object->element == 'propal') echo dol_buildpath('/comm/propal.php?id='.$object->id,1);
-									else if($object->element == 'commande') echo dol_buildpath('/commande/card.php?id='.$object->id,1);
+						if(DOL_VERSION>=6 && $object->element == 'propal') echo dol_buildpath('/comm/propal/card.php?id='.$object->id,1);
+						else if($object->element == 'propal') echo dol_buildpath('/comm/propal.php?id='.$object->id,1);
+						else if($object->element == 'commande') echo dol_buildpath('/commande/card.php?id='.$object->id,1);
 						?>";
 					}
 						

@@ -44,7 +44,7 @@
 				}
 				if ($res > 0) $modBarCodeProduct =new $module();
 			
-				if (!empty($modBarCodeProduct->code_auto)) $product->barcode=$modBarCodeProduct->getNextValue($object,$type);
+				if (!empty($modBarCodeProduct->code_auto)) $product->barcode=$modBarCodeProduct->getNextValue($product,$type);
 				
 			}
 			

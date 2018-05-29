@@ -202,7 +202,8 @@ class ActionsFree2Product
 								}
 								,async:false
 							}).done(function(fk_product) {
-								if(fk_product<=0)alert('ErrorDuringConversion '+ref);
+								if(fk_product == 'ALREADYEXISTS')alert('<?php echo $langs->transnoentities('ErrorProductAlreadyExistsWithThisRef'); ?>');
+								else if(fk_product<=0)alert('ErrorDuringConversion '+ref);
 								
 							});
 							

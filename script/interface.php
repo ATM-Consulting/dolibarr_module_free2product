@@ -24,6 +24,10 @@
 			} 
 		
 			$product = new Product($db);
+			if($product->fetch('', $ref) > 0) {
+				echo 'ALREADYEXISTS';
+				break;
+			}
 			$product->type = $product_type;
 			$product->ref = $ref;
 			$product->label = $label;

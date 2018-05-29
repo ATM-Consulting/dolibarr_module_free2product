@@ -11,3 +11,4 @@ NoParam=Pas de paramètre pour ce module. Vous trouverez une petite flèche à g
 convertAllFreeLine=Conversion complète
 
 set_FREE2PRODUCT_BASE_NEWREF=Base de référence pour la conversion en produit/service
+ErrorProductAlreadyExistsWithThisRef=Un produit/service existe déjà avec cette référence

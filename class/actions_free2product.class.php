@@ -100,6 +100,7 @@ class ActionsFree2Product
 								if($line->product_type <= 1 && $line->fk_product == 0) {
 									$lineid = !empty($line->id) ? $line->id : $line->rowid; // compatibilité 3.6
 									$desc = !empty($line->desc) ? $line->desc : $line->description; // compatibilité 3.6
+									$desc = strip_tags($desc);
 									echo '<tr>
 										<td>'.$formCore->texte('', 'TFreeProduct['.$line->id.'][ref]', $base_new_ref.$lineid, 15,255,' lineid="'.$lineid.'" label="'.htmlentities(addslashes($desc)).'" qty="'.$line->qty.'" price="'.$line->subprice.'" product_type="'.$line->product_type.'" tva="'.$line->tva_tx.'" ').'</td>
 										<td>'.$line->desc.'</td>
@@ -237,6 +238,7 @@ class ActionsFree2Product
 						$addButtonToConvertAll=true;
 						$lineid = !empty($line->id) ? $line->id : $line->rowid; // compatibilité 3.6
 						$desc = !empty($line->desc) ? $line->desc : $line->description;
+						$desc = strip_tags($desc);
 						$link='<a href="javascript:;" style="float:left;"';
 						$link.=' onclick="free2product('.$lineid.')" lineid="'.$lineid.'"';
 						$link.=' label="'.htmlentities(addslashes(strtr($desc,array("\n"=>'\n',"\r"=>'')))).'"';

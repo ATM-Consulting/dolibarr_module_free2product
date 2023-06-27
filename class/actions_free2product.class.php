@@ -164,11 +164,7 @@ class ActionsFree2Product
 					        		});
 					        		
 					        		
-					        		
-					        		document.location.href="<?php
-												if($object->element == 'propal') echo dol_buildpath('/comm/propal.php?id='.$object->id,1);
-												else if($object->element == 'commande') echo dol_buildpath('/commande/card.php?id='.$object->id,1);
-									?>";
+					        		redirect();	
 					          		$( this ).dialog( "close" );
 					        	}
 							}
@@ -202,7 +198,8 @@ class ActionsFree2Product
 								}
 								,async:false
 							}).done(function(fk_product) {
-								if(fk_product<=0)alert('ErrorDuringConversion '+ref);
+								if(fk_product == 'ALREADYEXISTS')alert('<?php echo $langs->transnoentities('ErrorProductAlreadyExistsWithThisRef'); ?>');
+								else if(fk_product<=0)alert('ErrorDuringConversion '+ref);
 								
 							});
 							

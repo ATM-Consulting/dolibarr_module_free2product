@@ -24,6 +24,10 @@
 			} 
 		
 			$product = new Product($db);
+			if($product->fetch('', $ref) > 0) {
+				echo 'ALREADYEXISTS';
+				break;
+			}
 			$product->type = $product_type;
 			$product->ref = $ref;
 			$product->label = $label;
@@ -32,6 +36,22 @@
 			$product->tva_tx = $tva;
 			$product->status = 1;
 			$product->status_buy = 1;
+			
+			if (! empty($conf->barcode->enabled) && ! empty($conf->global->BARCODE_PRODUCT_ADDON_NUM)) {
+				
+				$module=strtolower($conf->global->BARCODE_PRODUCT_ADDON_NUM);
+				$dirbarcode=array_merge(array('/core/modules/barcode/'),$conf->modules_parts['barcode']);
+				foreach ($dirbarcode as $dirroot)
+				{
+					$res=dol_include_once($dirroot.$module.'.php');
+					if ($res) break;
+				}
+				if ($res > 0) $modBarCodeProduct =new $module();
+			
+				if (!empty($modBarCodeProduct->code_auto)) $product->barcode=$modBarCodeProduct->getNextValue($product,$type);
+				
+			}
+			
 			$id = $product->create($user);
 			
 			if($id>0) {

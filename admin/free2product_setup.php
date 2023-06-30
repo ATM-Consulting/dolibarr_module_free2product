@@ -83,22 +83,24 @@ llxHeader('', $langs->trans($page_name));
 // Subheader
 $linkback = '<a href="' . DOL_URL_ROOT . '/admin/modules.php">'
     . $langs->trans("BackToModuleList") . '</a>';
-print_fiche_titre($langs->trans($page_name), $linkback);
+print load_fiche_titre($langs->trans($page_name), $linkback);
 
 // Configuration header
 $head = free2productAdminPrepareHead();
-dol_fiche_head(
+print dol_get_fiche_head(
     $head,
     'settings',
     $langs->trans("Module104950Name"),
-    0,
+    -1,
     "free2product@free2product"
 );
+
+print dol_get_fiche_end(-1);
 
 // Setup page goes here
 $form=new Form($db);
 $var=false;
-print '<table class="noborder" width="100%">';
+print '<table class="noborder centpercent" width="100%">';
 print '<tr class="liste_titre">';
 print '<td>'.$langs->trans("Parameters").'</td>'."\n";
 print '<td align="center" width="20">&nbsp;</td>';
@@ -108,9 +110,18 @@ print '</tr>';
 // Example with a yes / no select
 
 // Example with a yes / no select
+
+$tooltip = '';
+//$tooltip = $langs->trans("GenericMaskCodes", $langs->transnoentities("Product"), $langs->transnoentities("Product"));
+//$tooltip .= $langs->trans("GenericMaskCodes2");
+//$tooltip .= $langs->trans("GenericMaskCodes3");
+//$tooltip .= $langs->trans("GenericMaskCodes5");
+
+
 $var=!$var;
 print '<tr '.$bc[$var].'>';
-print '<td>'.$langs->trans("set_FREE2PRODUCT_BASE_NEWREF").'</td>';
+
+print '<td>'.$form->textwithpicto($langs->trans("set_FREE2PRODUCT_BASE_NEWREF"), $tooltip, 1, 1).'</td>';
 print '<td align="center" width="20">&nbsp;</td>';
 print '<td align="right" width="300">';
 print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';

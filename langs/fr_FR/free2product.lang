@@ -11,5 +11,5 @@ NoParam=Pas de paramètre pour ce module. Vous trouverez une petite flèche à g
 convertAllFreeLine=Conversion complète
 
 #set_FREE2PRODUCT_BASE_NEWREF= Masque de numérotation à utiliser pour la génération des références lors de la conversion en produit/service
-set_FREE2PRODUCT_BASE_NEWREF= Préfix utilisé pour la génération des références lors de la conversion en produit/service
+set_FREE2PRODUCT_BASE_NEWREF= Préfixe utilisé pour la génération des références lors de la conversion en produit/service
 ErrorProductAlreadyExistsWithThisRef=Un produit/service existe déjà avec cette référence

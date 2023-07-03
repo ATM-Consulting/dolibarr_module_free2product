@@ -53,19 +53,29 @@ print_fiche_titre($langs->trans($page_name), $linkback);
 
 // Configuration header
 $head = free2productAdminPrepareHead();
-dol_fiche_head(
+print dol_get_fiche_head(
     $head,
     'about',
     $langs->trans("Module104950Name"),
-    0,
+    -1,
     'free2product@free2product'
 );
+
+print dol_get_fiche_end(-1);
+
+
+require_once __DIR__ . '/../class/techatm.class.php';
+$techATM = new \free2product\TechATM($db);
+
+require_once __DIR__ . '/../core/modules/modFree2Product.class.php';
+$moduleDescriptor = new modFree2Product($db);
+
+print $techATM->getAboutPage($moduleDescriptor);
 
 // About page goes here
 print '<div style="float: left;"><img src="../img/Dolibarr_Preferred_Partner_logo.png" /></div>';
 print '<div>'.$langs->trans('ATMAbout').'</div>';
 
-dol_fiche_end();
 
 print '<br><center>';
 print '<a href="http://www.atm-consulting.fr" target="_blank"><img src="../img/ATM_logo.jpg" /></a>';

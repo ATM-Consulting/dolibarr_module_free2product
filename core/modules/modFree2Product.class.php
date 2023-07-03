@@ -50,9 +50,13 @@ class modFree2Product extends DolibarrModules
 		// Key text used to identify module (for permissions, menus, etc...)
 		$this->rights_class = 'free2product';
 
+		$this->editor_name = 'ATM Consulting';
+		$this->editor_url = 'https://www.atm-consulting.fr';
+
 		// Family can be 'crm','financial','hr','projects','products','ecm','technic','other'
 		// It is used to group modules in module setup page
-		$this->family = "ATM";
+		$this->family = "products";
+
 		// Module label (no space allowed), used if translation string 'ModuleXXXName' not found (where XXX is value of numeric property 'numero' of module)
 		$this->name = preg_replace('/^mod/i','',get_class($this));
 		// Module description, used if translation string 'ModuleXXXDesc' not found (where XXX is value of numeric property 'numero' of module)
@@ -106,6 +110,10 @@ class modFree2Product extends DolibarrModules
 		$this->phpmin = array(5,0);					// Minimum version of PHP required by module
 		$this->need_dolibarr_version = array(3,0);	// Minimum version of Dolibarr required by module
 		$this->langfiles = array("free2product@free2product");
+
+		// Url to the file with your last numberversion of this module
+		require_once __DIR__ . '/../../class/techatm.class.php';
+		$this->url_last_version = \free2product\TechATM::getLastModuleVersionUrl($this);
 
 		// Constants
 		// List of particular constants to add when module is enabled (key, 'chaine', value, desc, visible, 'current' or 'allentities', deleteonunactive)

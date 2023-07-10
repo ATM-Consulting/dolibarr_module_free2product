@@ -5,7 +5,9 @@ ___
 # NOT RELEASED
 
 
+
 # 1.2
+
 - FIX : label with html tags not working *27/06/2023* - 1.2.1
 
 # 1.0

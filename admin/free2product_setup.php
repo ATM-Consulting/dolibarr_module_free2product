@@ -127,7 +127,7 @@ print '<td align="right" width="300">';
 print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
 print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
 print '<input type="hidden" name="action" value="set_FREE2PRODUCT_BASE_NEWREF">';
-print '<input type="text" name="FREE2PRODUCT_BASE_NEWREF" size="10" value="'.$conf->global->FREE2PRODUCT_BASE_NEWREF.'" />';
+print '<input type="text" name="FREE2PRODUCT_BASE_NEWREF" size="10" value="' . getDolGlobalString('FREE2PRODUCT_BASE_NEWREF').'" />';
 print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
 print '</form>';
 print '</td></tr>';

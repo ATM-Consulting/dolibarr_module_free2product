@@ -22,11 +22,11 @@
  * \brief   This file is an example hook overload class file
  *          Put some comments here
  */
-
+require_once __DIR__ . '/../backport/v19/core/class/commonhookactions.class.php';
 /**
  * Class ActionsFree2Product
  */
-class ActionsFree2Product
+class ActionsFree2Product extends \fraisdeport\RetroCompatCommonHookActions
 {
 	/**
 	 * @var array Hook results. Propagated to $hookmanager->resArray for later reuse
@@ -61,7 +61,6 @@ class ActionsFree2Product
 	 */
 	
 	function addMoreActionsButtons($parameters, &$object, &$action, $hookmanager){
-		
 		if (
 			in_array('propalcard', explode(':', $parameters['context'])) 
 			|| in_array('ordercard', explode(':', $parameters['context']))
@@ -72,7 +71,7 @@ class ActionsFree2Product
 			
 			global $addButtonToConvertAll;
 			
-			$base_new_ref = !empty($conf->global->FREE2PRODUCT_BASE_NEWREF) ? $conf->global->FREE2PRODUCT_BASE_NEWREF : 'FREELINE-';
+			$base_new_ref = getDolGlobalString('FREE2PRODUCT_BASE_NEWREF') ?? 'FREELINE-';
 			
 			if($addButtonToConvertAll) {
 				
@@ -137,7 +136,7 @@ class ActionsFree2Product
 		  	
 			global $langs,$conf;
 			$langs->load('free2product@free2product');
-			$base_new_ref = !empty($conf->global->FREE2PRODUCT_BASE_NEWREF) ? $conf->global->FREE2PRODUCT_BASE_NEWREF : 'FREELINE-';
+			$base_new_ref = getDolGlobalString('FREE2PRODUCT_BASE_NEWREF') ?? 'FREELINE-';
 			
 			if(!empty($object->lines)) {
 				
@@ -174,11 +173,7 @@ class ActionsFree2Product
 					
 					function redirect()
 					{
-						document.location.href="<?php
-						if(DOL_VERSION>=6 && $object->element == 'propal') echo dol_buildpath('/comm/propal/card.php?id='.$object->id,1);
-						else if($object->element == 'propal') echo dol_buildpath('/comm/propal.php?id='.$object->id,1);
-						else if($object->element == 'commande') echo dol_buildpath('/commande/card.php?id='.$object->id,1);
-						?>";
+						document.location.href='';
 					}
 						
 					function convert_free2product(lineid,ref,label,qty,price,product_type,tva) {

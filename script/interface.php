@@ -16,8 +16,8 @@
 			$ref = GETPOST('ref');
 			$product_type = GETPOST('product_type');
 			$tva = GETPOST('tva');
-			
-			$base_new_ref = getDolGlobalString('FREE2PRODUCT_BASE_NEWREF') ?? 'FREELINE-';
+
+			$base_new_ref = getDolGlobalString('FREE2PRODUCT_BASE_NEWREF', 'FREELINE-');
 			
 			if (empty($ref) && (!getDolGlobalString('PRODUCT_CODEPRODUCT_ADDON') || getDolGlobalString('PRODUCT_CODEPRODUCT_ADDON') == 'mod_codeproduct_leopard')) {
 				$ref = $base_new_ref.$lineid;

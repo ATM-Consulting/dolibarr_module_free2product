@@ -70,8 +70,8 @@ class ActionsFree2Product extends \fraisdeport\RetroCompatCommonHookActions
 			$langs->load('free2product@free2product');
 			
 			global $addButtonToConvertAll;
-			
-			$base_new_ref = getDolGlobalString('FREE2PRODUCT_BASE_NEWREF') ?? 'FREELINE-';
+
+			$base_new_ref = getDolGlobalString('FREE2PRODUCT_BASE_NEWREF', 'FREELINE-');
 			
 			if($addButtonToConvertAll) {
 				
@@ -136,7 +136,7 @@ class ActionsFree2Product extends \fraisdeport\RetroCompatCommonHookActions
 		  	
 			global $langs,$conf;
 			$langs->load('free2product@free2product');
-			$base_new_ref = getDolGlobalString('FREE2PRODUCT_BASE_NEWREF') ?? 'FREELINE-';
+            $base_new_ref = getDolGlobalString('FREE2PRODUCT_BASE_NEWREF', 'FREELINE-');
 			
 			if(!empty($object->lines)) {
 				

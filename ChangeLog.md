@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 ___
 
 # NOT RELEASED
+- NEW : Dolibarr compatibility V19 - *04/12/2023* - 1.3.0  
+  Changed Dolibarr compatibility range to 12 min - 19 max  
+  Change PHP compatibility range to 7.0 min - 8.2 max
 
 
 

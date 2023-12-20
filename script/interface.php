@@ -16,10 +16,10 @@
 			$ref = GETPOST('ref');
 			$product_type = GETPOST('product_type');
 			$tva = GETPOST('tva');
+
+			$base_new_ref = getDolGlobalString('FREE2PRODUCT_BASE_NEWREF', 'FREELINE-');
 			
-			$base_new_ref = !empty($conf->global->FREE2PRODUCT_BASE_NEWREF) ? $conf->global->FREE2PRODUCT_BASE_NEWREF : 'FREELINE-';
-			
-			if (empty($ref) && (empty($conf->global->PRODUCT_CODEPRODUCT_ADDON) || $conf->global->PRODUCT_CODEPRODUCT_ADDON == 'mod_codeproduct_leopard')) {
+			if (empty($ref) && (!getDolGlobalString('PRODUCT_CODEPRODUCT_ADDON') || getDolGlobalString('PRODUCT_CODEPRODUCT_ADDON') == 'mod_codeproduct_leopard')) {
 				$ref = $base_new_ref.$lineid;
 			} 
 		
@@ -37,9 +37,9 @@
 			$product->status = 1;
 			$product->status_buy = 1;
 			
-			if (! empty($conf->barcode->enabled) && ! empty($conf->global->BARCODE_PRODUCT_ADDON_NUM)) {
+			if (! empty($conf->barcode->enabled) && getDolGlobalString('BARCODE_PRODUCT_ADDON_NUM')) {
 				
-				$module=strtolower($conf->global->BARCODE_PRODUCT_ADDON_NUM);
+				$module=strtolower( getDolGlobalString('BARCODE_PRODUCT_ADDON_NUM'));
 				$dirbarcode=array_merge(array('/core/modules/barcode/'),$conf->modules_parts['barcode']);
 				foreach ($dirbarcode as $dirroot)
 				{

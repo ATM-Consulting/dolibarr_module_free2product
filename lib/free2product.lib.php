@@ -25,7 +25,7 @@
 
 function free2productAdminPrepareHead()
 {
-    global $langs, $conf;
+    global $langs, $conf, $object;
 
     $langs->load("free2product@free2product");
 

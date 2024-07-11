@@ -37,7 +37,7 @@
 			$product->status = 1;
 			$product->status_buy = 1;
 			
-			if (! empty($conf->barcode->enabled) && getDolGlobalString('BARCODE_PRODUCT_ADDON_NUM')) {
+			if (isModEnabled('barcode') && getDolGlobalString('BARCODE_PRODUCT_ADDON_NUM')) {
 				
 				$module=strtolower( getDolGlobalString('BARCODE_PRODUCT_ADDON_NUM'));
 				$dirbarcode=array_merge(array('/core/modules/barcode/'),$conf->modules_parts['barcode']);
@@ -60,7 +60,7 @@
 				
 				$db->query("UPDATE ".MAIN_DB_PREFIX.$table." SET fk_product=".$id.",description=''  WHERE rowid=".$lineid);
 
-				if($conf->nomenclature->enabled) { //TODO hook
+				if(isModEnabled('nomenclature')) { //TODO hook
 					$db->query("UPDATE ".MAIN_DB_PREFIX."nomenclature SET fk_object=".$id.", object_type='product' WHERE fk_object=".$lineid." AND object_type='".$element."' ");
 				}
 
